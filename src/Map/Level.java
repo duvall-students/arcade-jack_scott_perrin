@@ -53,8 +53,8 @@ public abstract class Level
 	
 	// some things we need to remember during our game
 	private Scene myScene;
-
-
+	Text textScore = new Text();
+	Text textlives = new Text();
 
 	protected Group root = new Group();
 	protected EntityCollection levelEntities = new EntityCollection();
@@ -141,6 +141,10 @@ public abstract class Level
                                     .map(Collidable::getView)
                                     .collect(Collectors.toList())
                     );
+                    if(levelEntities.getObstacles().size() == 0)
+                    {
+                    	createWinGameDisplay();
+                    }
                 }
             }
         });
@@ -197,7 +201,7 @@ public abstract class Level
 	//Display Class
 	private void createCurrentScoreDisplay() 
 	{
-		Text textScore = new Text();
+
 		textScore.setFont(new Font("Arial", 20));
 		textScore.setX((15.5*screenWidth)/20);
 		textScore.setY(screenHeight/20);
@@ -219,7 +223,6 @@ public abstract class Level
 	//Display Class
 	private void createlivesDisplay() 
 	{
-		Text textlives = new Text();
 		textlives.setFont(new Font("Arial", 20));
 		textlives.setX(screenWidth/20);
 		textlives.setY(screenHeight/20);
