@@ -33,15 +33,6 @@ public class GameController extends Application
 	public static final int FRAMES_PER_SECOND = 60;
 	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-	//public int screenHeight;
-	//public int screenWidth;
-
-	// some things we need to remember during our game
-	private Scene myScene;
-	private BreakoutBall myBall;
-	private PaddleBouncer myPaddle;
-	private List<Brick> myBricks;
-
 
 	private int totalScore = 0;
 	GameRules gamerule = new GameRules();
