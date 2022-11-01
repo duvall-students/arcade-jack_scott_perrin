@@ -91,7 +91,7 @@ public class BreakoutLevel extends Level
 			PaddleBouncer p = new PaddleBouncer(paddleImage, width, height);
 			myPaddle = p;
 			levelEntities.setPlayer(p);
-			levelEntities.addCollidableEntity(p);
+			//levelEntities.addCollidableEntity(p);
 			root.getChildren().add(p.getView());
 		}
 		catch (FileNotFoundException e) {
@@ -123,7 +123,7 @@ public class BreakoutLevel extends Level
 					Image image2 = new Image(new FileInputStream("resources/brick" + Integer.toString(i+1) + ".gif"));
 					Brick br = new Brick(image2, width, height, i, k);
 					levelEntities.addObstacle(br);
-					levelEntities.addCollidableEntity(br);
+					//levelEntities.addCollidableEntity(br);
 					br.setScore(9-i);
 					root.getChildren().add(br.getView());
 				}

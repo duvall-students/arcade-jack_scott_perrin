@@ -61,6 +61,7 @@ public abstract class GameLoop
 	{
 		checkCollisionAgainstBricks();
 		playerOnlyCollision();
+		
 	}
 	
 	protected void checkCollisionAgainstObstacles()
@@ -99,7 +100,7 @@ public abstract class GameLoop
 		}
 	}
 	
-	protected void checkCollisionAgainstBricks()
+	protected void checkCollisionAgainstBricks() 
 	{
 	
 		for (Projectile projectile: levelEntities.getProjectiles())
