@@ -33,17 +33,6 @@ public class GameController extends Application
 	public static final int FRAMES_PER_SECOND = 60;
 	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-	public static final Paint BACKGROUND = Color.BLACK;
-	public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-	public static final String BOUNCER_IMAGE = "resources/ball.gif";
-	public static final String POINTS_IMAGE = "resources/pointspower.gif";
-	public static final int NUM_BOUNCERS = 1;
-	public static final int NUM_BRICKS_COLUMNS = 20;
-	public static final int NUM_BRICKS_ROWS = 5;
-	public static final int NUM_BRICKS = NUM_BRICKS_COLUMNS * NUM_BRICKS_ROWS;
-	public static final int NUM_PADDLES = 1;
-	public static final String PADDLE_IMAGE = "resources/paddle.gif";
-	public static final String PONG_SOUND = "resources/pong_beep.wav";
 	//public int screenHeight;
 	//public int screenWidth;
 
@@ -80,19 +69,9 @@ public class GameController extends Application
 	
 	private void step (double elapsedTime, GameLoop gameLoop, EntityCollection levelEntities) 
 	{
-		/*
-		myBall.move(elapsedTime);
-		playerMinuslive();
-		myBall.bounce(myScene.getWidth(), myScene.getHeight());
-		playerHitsPaddle();
-		ArrayList<Bouncerw> destroyBricks = new ArrayList<Bouncerw>();
-		destroyBricks = playerHitsBrick(destroyBricks);
-		removeBricksView (destroyBricks, doubleBricks);
-		textScore.setText("Score: " + totalScore);
-		checkPlayerLives();
-		checkAllBricksGone();
-		*/
+
 		gameLoop.runLoop(elapsedTime, levelEntities); 
+		
 	}
 	
 	public static void main () {
