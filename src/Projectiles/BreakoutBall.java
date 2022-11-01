@@ -34,6 +34,7 @@ public class BreakoutBall extends Projectile
 	@Override
 	protected void projectileBehavior()
 	{
+//		collideWalls(GameRules.width, GameRules.height);
 		collideWalls(GameRules.width, GameRules.height);
 	}
 	/**

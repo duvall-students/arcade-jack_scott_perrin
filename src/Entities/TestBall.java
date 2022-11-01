@@ -46,7 +46,9 @@ public class TestBall {
 
 	public void bounce (double screenWidth, double screenHeight) {
 		// collide all bouncers against the walls
-		if (myView.getX() < 0 || myView.getX() > screenWidth - myView.getBoundsInLocal().getWidth()) {
+//		if (myView.getX() < 0 || myView.getX() > screenWidth - myView.getBoundsInLocal().getWidth()) {
+		if (myView.getX() < 0 || myView.getX() > screenWidth - myView.getBoundsInLocal().getWidth()) {	
+		
 			myVelocity = new Point2D(-myVelocity.getX(), myVelocity.getY());
 		}
 		if (myView.getY() < 0 || myView.getY() > screenHeight - myView.getBoundsInLocal().getHeight()) {

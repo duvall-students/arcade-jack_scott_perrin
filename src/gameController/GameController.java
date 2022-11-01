@@ -44,8 +44,8 @@ public class GameController extends Application
 	public static final int NUM_PADDLES = 1;
 	public static final String PADDLE_IMAGE = "resources/paddle.gif";
 	public static final String PONG_SOUND = "resources/pong_beep.wav";
-	public int screenHeight;
-	public int screenWidth;
+	//public int screenHeight;
+	//public int screenWidth;
 
 	// some things we need to remember during our game
 	private Scene myScene;

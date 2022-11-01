@@ -8,7 +8,7 @@ public class GameRules {
 	private int playerlives = 3;
 	
 	public static int height = (int) (GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getHeight() * 0.7);
-	public static int width = (int) (GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getHeight() * 0.7);
+	public static int width = (int) (GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getWidth()*0.8);
 	
 	public void setScreenSize(GraphicsDevice gd[]) 
 	{
