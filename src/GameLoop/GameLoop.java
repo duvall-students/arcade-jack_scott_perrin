@@ -59,70 +59,38 @@ public abstract class GameLoop
 	 */
 	protected void checkCollision() 
 	{
-		checkCollisionAgainstBricks();
+		checkCollisionAgainstObstacles();
 		playerOnlyCollision();
 	}
 	
+
+	
 	protected void checkCollisionAgainstObstacles()
 	{
-		//List<Collidable>
 		
-		//include projectiles in collidable
-		//if projectile collides with collidable that is not itself
+		ArrayList<Obstacle> collidedEntities = new ArrayList<Obstacle>();
 		
-			//projectile.collisionBehavior
-				//ball just bounces
-				//bullet gets destroyed
-			
-			//collidable.collisionbehavior
-				//breakout player plays noise
-				//galaga player loses health
-		//trigger collision event
-		//
-		for (Projectile projectile: levelEntities.getProjectiles())
-		{
-			for(Collidable collidableEntity : levelEntities.getCollidableEntities())
-			{
-				if(projectile.getView().getBoundsInParent().intersects(collidableEntity.getView().getBoundsInParent()))
-				{
-					projectile.collisionBehavior();
-					collidableEntity.collisionBehavior();
-					//if health is now 0 remove from list, triggering change listener
-					
-					
-
-					projectile.update(elapsedTime);
-					projectile.update(elapsedTime);
-					projectile.update(elapsedTime);
-				}
-			}
-		}
-	}
-	
-	protected void checkCollisionAgainstBricks()
-	{
-	
 		for (Projectile projectile: levelEntities.getProjectiles())
 		{
 			for(Obstacle obstacle : levelEntities.getObstacles())
 			{
-				Bounds brickview = obstacle.getView().getBoundsInParent();
-				Bounds projectileview = projectile.getView().getBoundsInParent();
-				
 				if(projectile.getView().getBoundsInParent().intersects(obstacle.getView().getBoundsInParent()))
 				{
 					
 					projectile.collisionBehavior();
-
+					
+					collidedEntities.add(obstacle);
 					//Temporary fix since bricks arent being removed
 					projectile.update(elapsedTime);
 					projectile.update(elapsedTime);
 					projectile.update(elapsedTime);
-
-
 				}
 			}
 		}
+		
+		
+			levelEntities.removeObstacles(collidedEntities);
+		
 
 	}
 	/**
