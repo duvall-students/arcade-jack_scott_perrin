@@ -18,14 +18,15 @@ public class EntityCollection
 	
 	private List<Projectile> projectiles = new ArrayList<Projectile>();
 	private List<Updatable> updatableEntities = new ArrayList<Updatable>();
-	private List<Obstacle> obstacles = new ArrayList<Obstacle>();
+	private ObservableList<Obstacle> obstacles = FXCollections.observableArrayList();
 	private Player player;
 	
 	public EntityCollection() {}
 	
 	
-	public void removeCollidable(Collidable object)
+	public void removeCollidable(ArrayList<Collidable> collidedEntities)
 	{
+		/*
 		if(player != object)
 		{
 			for (Obstacle obstacle : obstacles)
@@ -36,14 +37,26 @@ public class EntityCollection
 				}
 			}
 		}
-		collidableEntities.remove(object);
+		*/
+		for (Collidable collidedEntity : collidedEntities)
+		{
+			collidableEntities.remove(collidedEntity);
+		}
 	}
 	
 	
-	public List<Obstacle> getObstacles() {
+	public ObservableList<Obstacle> getObstacles() {
 		return obstacles;
 	}
-
+	
+	public void removeObstacles(ArrayList<Obstacle> collidedObstacles)
+	{
+		for (Obstacle collidedObstacle : collidedObstacles)
+		{
+			obstacles.remove(collidedObstacle);
+		}
+	}
+	
 	public void addObstacle(Obstacle obstacle) {
 		this.obstacles.add(obstacle);
 	}
@@ -68,14 +81,16 @@ public class EntityCollection
 		return collidableEntities;
 	}
 	
-	/*
+	
 	public void addCollidableEntity(Collidable collidableEntity) {
-		//this.collidableEntities.add(collidableEntity);
+		this.collidableEntities.add(collidableEntity);
+		/*;
 		this.collidableEntities.addAll(obstacles);
 		this.collidableEntities.addAll(projectiles);
 		this.collidableEntities.add(player);
+		*/
 	}
-	*/
+	
 	
 	public Player getPlayer() {
 		return player;
