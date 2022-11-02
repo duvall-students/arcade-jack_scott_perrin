@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entities.Obstacle;
+import Entities.Player;
 import Map.Level;
 import Projectiles.Projectile;
 import gameController.EntityCollection;
@@ -25,7 +26,7 @@ public abstract class GameLoop
 	protected double elapsedTime;
 	protected EntityCollection levelEntities;
 	
-	public GameLoop(Level gameLevel) 
+	public GameLoop() 
 	{
 		
 	}
@@ -59,16 +60,17 @@ public abstract class GameLoop
 	 */
 	protected void checkCollision() 
 	{
-		checkCollisionAgainstObstacles();
-		playerOnlyCollision();
+		checkEntityCollision();
 	}
 	
 
 	
-	protected void checkCollisionAgainstObstacles()
+	protected void checkEntityCollision()
 	{
 		
-		ArrayList<Obstacle> collidedEntities = new ArrayList<Obstacle>();
+		ArrayList<Obstacle> collidedObstacles = new ArrayList<Obstacle>();
+		ArrayList<Projectile> collidedProjectiles = new ArrayList<Projectile>();
+		ArrayList<Player> collidedPlayers = new ArrayList<Player>();
 		
 		for (Projectile projectile: levelEntities.getProjectiles())
 		{
@@ -76,23 +78,58 @@ public abstract class GameLoop
 			{
 				if(projectile.getView().getBoundsInParent().intersects(obstacle.getView().getBoundsInParent()))
 				{
-					
-					projectile.collisionBehavior();
-					
-					collidedEntities.add(obstacle);
-					//Temporary fix since bricks arent being removed
-					projectile.update(elapsedTime);
-					projectile.update(elapsedTime);
-					projectile.update(elapsedTime);
+					collidedObstacles.add(obstacle);
+					collidedProjectiles.add(projectile);
+
 				}
 			}
+			for(Projectile otherProjectile : levelEntities.getProjectiles())
+			{
+				if(projectile != otherProjectile && projectile.getView().getBoundsInParent().intersects(otherProjectile.getView().getBoundsInParent()))
+				{
+					collidedProjectiles.add(otherProjectile);
+				}
+			}
+			if(projectile.getView().getBoundsInParent().intersects(levelEntities.getPlayer().getView().getBoundsInParent()))
+			{
+				collidedPlayers.add(levelEntities.getPlayer());
+				collidedProjectiles.add(projectile);
+			}
+			
 		}
 		
-		
-			levelEntities.removeObstacles(collidedEntities);
-		
 
+			handleProjectileObstacleCollision(collidedObstacles);
+			handleProjectileEntityCollision(collidedProjectiles);
+			handleProjectilePlayerCollision(collidedPlayers);
 	}
+	
+	protected void handleProjectileObstacleCollision(ArrayList<Obstacle> collidedObstacles)
+	{
+		for (Obstacle obstacle : collidedObstacles)
+		{
+			obstacle.collisionBehavior();
+		}
+		levelEntities.removeObstacles(collidedObstacles);
+	}
+	
+	/**
+	 * Handle what action the projectile performs when hitting an entity
+	 * @param collidedProjectiles
+	 */
+	protected abstract void handleProjectileEntityCollision(ArrayList<Projectile> collidedProjectiles);
+		//bounce
+		//destroy projectile
+	
+	/**
+	 * Handle what action the player performs when hit by a projectile
+	 * @param collidedPlayers
+	 */
+	protected abstract void handleProjectilePlayerCollision(ArrayList<Player> collidedPlayers);
+		//bounce
+		//destroy projectile and damage player
+	
+	
 	/**
 	 * TESTING PURPOSES ONLY
 	 */
