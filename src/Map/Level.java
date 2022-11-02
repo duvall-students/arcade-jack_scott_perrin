@@ -130,6 +130,21 @@ public abstract class Level
 			
 		});
 		*/
+		levelEntities.getProjectiles().addListener((ListChangeListener<Projectile>) change -> {
+            while (change.next()) 
+            {
+                if (change.wasRemoved()) 
+                {
+                    root.getChildren().removeAll
+                    (
+                            change.getRemoved().stream()
+                                    .map(Collidable::getView)
+                                    .collect(Collectors.toList())
+                    );
+                }
+            }
+        });
+		
 		levelEntities.getObstacles().addListener((ListChangeListener<Obstacle>) change -> {
             while (change.next()) 
             {
