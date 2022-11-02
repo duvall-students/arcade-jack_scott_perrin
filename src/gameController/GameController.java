@@ -50,7 +50,7 @@ public class GameController extends Application
 		stage.show();
 		
 		
-		GameLoop gameLoop = new BreakoutGameLoop(testLevel);
+		GameLoop gameLoop = new BreakoutGameLoop();
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY, gameLoop, testLevel.getLevelEntities()));
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
