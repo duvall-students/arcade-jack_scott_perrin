@@ -1,8 +1,11 @@
 package GameLoop;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
+import Entities.Player;
 import Map.Level;
+import Projectiles.Projectile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.media.Media;
@@ -16,9 +19,29 @@ public class BreakoutGameLoop extends GameLoop
 	public Media pongSound = new Media(Paths.get(PONG_SOUND).toUri().toString());
 	public MediaPlayer sound  = new MediaPlayer(pongSound);
 
-	public BreakoutGameLoop(Level GameLevel)
+	public BreakoutGameLoop()
 	{
-		super(GameLevel);
+		super();
+	}
+
+	@Override
+	protected void handleProjectileEntityCollision(ArrayList<Projectile> collidedProjectiles) 
+	{
+		for (Projectile projectile : collidedProjectiles)
+		{
+			projectile.collisionBehavior();
+		}
+		
+	}
+
+	@Override
+	protected void handleProjectilePlayerCollision(ArrayList<Player> collidedPlayers) 
+	{
+		for(Player player : collidedPlayers)
+		{
+			player.collisionBehavior();
+		}
+		
 	}
 	
 	//check out of bounds projectiles

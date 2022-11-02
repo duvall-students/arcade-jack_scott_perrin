@@ -8,18 +8,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import Entities.Brick;
+import Entities.Obstacle;
 import Entities.PaddleBouncer;
 import Projectiles.BreakoutBall;
 import Projectiles.Projectile;
 import Settings.GameRules;
 import Settings.HighScore;
 import gameController.EntityCollection;
+import interfaces.Collidable;
 import interfaces.Updatable;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -49,8 +53,8 @@ public abstract class Level
 	
 	// some things we need to remember during our game
 	private Scene myScene;
-
-
+	Text textScore = new Text();
+	Text textlives = new Text();
 
 	protected Group root = new Group();
 	protected EntityCollection levelEntities = new EntityCollection();
@@ -87,17 +91,85 @@ public abstract class Level
 		createlivesDisplay();
 		createPlayer(screenWidth, screenHeight);
 		
+
+		
+		
 		//Unique functionality defined in sub-classes
 		generateLevel(screenWidth, screenHeight, BACKGROUND);
 		myScene = new Scene(root, screenWidth, screenHeight, BACKGROUND);
 		myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
 		
+		initializeCollisionListener();
 		//start event to listen for changes to game entities
 		//initializeListener();
 
 	}
 	
+	public void initializeCollisionListener()
+	{
+		/*
+		ObservableList<Collidable> list = levelEntities.getCollidableEntities();
+		
+		list.addListener(new ListChangeListener<Collidable>() 
+		{
 
+			@Override
+			public void onChanged(Change<? extends Collidable> c) 
+			{
+				while(c.next())
+				{
+					if (c.wasRemoved())
+					{
+						System.out.println("BRICK REMOVED");
+						Collidable entity = c.getFrom();
+						removeCollidableEntity((Collidable)c.getRemoved());
+					}
+				}
+				
+			}
+			
+		});
+		*/
+		levelEntities.getProjectiles().addListener((ListChangeListener<Projectile>) change -> {
+            while (change.next()) 
+            {
+                if (change.wasRemoved()) 
+                {
+                    root.getChildren().removeAll
+                    (
+                            change.getRemoved().stream()
+                                    .map(Collidable::getView)
+                                    .collect(Collectors.toList())
+                    );
+                }
+            }
+        });
+		
+		levelEntities.getObstacles().addListener((ListChangeListener<Obstacle>) change -> {
+            while (change.next()) 
+            {
+                if (change.wasRemoved()) 
+                {
+                    root.getChildren().removeAll
+                    (
+                            change.getRemoved().stream()
+                                    .map(Collidable::getView)
+                                    .collect(Collectors.toList())
+                    );
+                    if(levelEntities.getObstacles().size() == 0)
+                    {
+                    	createWinGameDisplay();
+                    }
+                }
+            }
+        });
+
+	}
+	
+	protected void removeCollidableEntity(Collidable removedBrick)
+	{
+		root.getChildren().remove(removedBrick.getView());
+	}
 
 	
 	
@@ -144,7 +216,7 @@ public abstract class Level
 	//Display Class
 	private void createCurrentScoreDisplay() 
 	{
-		Text textScore = new Text();
+
 		textScore.setFont(new Font("Arial", 20));
 		textScore.setX((15.5*screenWidth)/20);
 		textScore.setY(screenHeight/20);
@@ -166,7 +238,6 @@ public abstract class Level
 	//Display Class
 	private void createlivesDisplay() 
 	{
-		Text textlives = new Text();
 		textlives.setFont(new Font("Arial", 20));
 		textlives.setX(screenWidth/20);
 		textlives.setY(screenHeight/20);

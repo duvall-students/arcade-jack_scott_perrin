@@ -20,7 +20,9 @@ public class PaddleBouncer extends Player
 	public PaddleBouncer (Image image, double screenWidth, double screenHeight) {
 		myView = new ImageView(image);
 		// make sure it stays a circle
-		double playerWidth = screenWidth/20;
+//		double playerWidth = screenWidth/20;
+		double playerWidth = screenWidth/10;
+		
 		double playerHeight = screenHeight/20;
 		myView.setFitWidth(playerWidth);
 		myView.setFitHeight(playerHeight);

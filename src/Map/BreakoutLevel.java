@@ -61,7 +61,6 @@ public class BreakoutLevel extends Level
 	@Override
 	protected void generateLevel(int width, int height, Paint background)
 	{
-		
 
 		createProjectile(width, height);
 		

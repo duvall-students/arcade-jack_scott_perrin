@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entities.Obstacle;
+import Entities.Player;
 import Map.Level;
 import Projectiles.Projectile;
 import gameController.EntityCollection;
@@ -25,7 +26,7 @@ public abstract class GameLoop
 	protected double elapsedTime;
 	protected EntityCollection levelEntities;
 	
-	public GameLoop(Level gameLevel) 
+	public GameLoop() 
 	{
 		
 	}
@@ -59,72 +60,76 @@ public abstract class GameLoop
 	 */
 	protected void checkCollision() 
 	{
-		checkCollisionAgainstBricks();
-		playerOnlyCollision();
+		checkEntityCollision();
 	}
 	
-	protected void checkCollisionAgainstObstacles()
-	{
-		//List<Collidable>
-		
-		//include projectiles in collidable
-		//if projectile collides with collidable that is not itself
-		
-			//projectile.collisionBehavior
-				//ball just bounces
-				//bullet gets destroyed
-			
-			//collidable.collisionbehavior
-				//breakout player plays noise
-				//galaga player loses health
-		//trigger collision event
-		//
-		for (Projectile projectile: levelEntities.getProjectiles())
-		{
-			for(Collidable collidableEntity : levelEntities.getCollidableEntities())
-			{
-				if(projectile.getView().getBoundsInParent().intersects(collidableEntity.getView().getBoundsInParent()))
-				{
-					projectile.collisionBehavior();
-					collidableEntity.collisionBehavior();
-					//if health is now 0 remove from list, triggering change listener
-					
-					
 
-					projectile.update(elapsedTime);
-					projectile.update(elapsedTime);
-					projectile.update(elapsedTime);
-				}
-			}
-		}
-	}
 	
-	protected void checkCollisionAgainstBricks()
+	protected void checkEntityCollision()
 	{
-	
+		
+		ArrayList<Obstacle> collidedObstacles = new ArrayList<Obstacle>();
+		ArrayList<Projectile> collidedProjectiles = new ArrayList<Projectile>();
+		ArrayList<Player> collidedPlayers = new ArrayList<Player>();
+		
 		for (Projectile projectile: levelEntities.getProjectiles())
 		{
 			for(Obstacle obstacle : levelEntities.getObstacles())
 			{
-				Bounds brickview = obstacle.getView().getBoundsInParent();
-				Bounds projectileview = projectile.getView().getBoundsInParent();
-				
 				if(projectile.getView().getBoundsInParent().intersects(obstacle.getView().getBoundsInParent()))
 				{
-					
-					projectile.collisionBehavior();
-
-					//Temporary fix since bricks arent being removed
-					projectile.update(elapsedTime);
-					projectile.update(elapsedTime);
-					projectile.update(elapsedTime);
-
+					collidedObstacles.add(obstacle);
+					collidedProjectiles.add(projectile);
 
 				}
 			}
+			for(Projectile otherProjectile : levelEntities.getProjectiles())
+			{
+				if(projectile != otherProjectile && projectile.getView().getBoundsInParent().intersects(otherProjectile.getView().getBoundsInParent()))
+				{
+					collidedProjectiles.add(otherProjectile);
+				}
+			}
+			if(projectile.getView().getBoundsInParent().intersects(levelEntities.getPlayer().getView().getBoundsInParent()))
+			{
+				collidedPlayers.add(levelEntities.getPlayer());
+				collidedProjectiles.add(projectile);
+			}
+			
 		}
+		
 
+			handleProjectileObstacleCollision(collidedObstacles);
+			handleProjectileEntityCollision(collidedProjectiles);
+			handleProjectilePlayerCollision(collidedPlayers);
 	}
+	
+	protected void handleProjectileObstacleCollision(ArrayList<Obstacle> collidedObstacles)
+	{
+		for (Obstacle obstacle : collidedObstacles)
+		{
+			obstacle.collisionBehavior();
+		}
+		levelEntities.removeObstacles(collidedObstacles);
+	}
+	
+	/**
+	 * Handle what action the projectile performs when hitting an entity
+	 * @param collidedProjectiles
+	 */
+	protected abstract void handleProjectileEntityCollision(ArrayList<Projectile> collidedProjectiles);
+		//bounce
+		//destroy projectile
+	
+	/**
+	 * Handle what action the player performs when hit by a projectile
+	 * @param collidedPlayers
+	 */
+	protected abstract void handleProjectilePlayerCollision(ArrayList<Player> collidedPlayers);
+		//bounce
+		//destroy projectile and damage player
+	
+	
 	/**
 	 * TESTING PURPOSES ONLY
 	 */
