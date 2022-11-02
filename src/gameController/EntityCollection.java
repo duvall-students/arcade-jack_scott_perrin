@@ -16,7 +16,7 @@ public class EntityCollection
 	//collidable will likely be removed at a future point
 	private ObservableList<Collidable> collidableEntities = FXCollections.observableArrayList();
 	
-	private List<Projectile> projectiles = new ArrayList<Projectile>();
+	private ObservableList<Projectile> projectiles = FXCollections.observableArrayList();
 	private List<Updatable> updatableEntities = new ArrayList<Updatable>();
 	private ObservableList<Obstacle> obstacles = FXCollections.observableArrayList();
 	private Player player;
@@ -57,11 +57,19 @@ public class EntityCollection
 		}
 	}
 	
+	public void removeProjectiles(ArrayList<Projectile> collidedProjectiles)
+	{
+		for (Projectile collidedProjectile : collidedProjectiles)
+		{
+			projectiles.remove(collidedProjectile);
+		}
+	}
+	
 	public void addObstacle(Obstacle obstacle) {
 		this.obstacles.add(obstacle);
 	}
 
-	public List<Projectile> getProjectiles() {
+	public ObservableList<Projectile> getProjectiles() {
 		return projectiles;
 	}
 
